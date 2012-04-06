@@ -2,9 +2,8 @@ package TestApp;
 
 use Moose;
 use Catalyst qw/
-  ConfigLoader
   Session
-  Session::Store::Memcached
+  Session::Store::TestMemcached
   Session::State::Cookie
 /;
 

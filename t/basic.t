@@ -2,27 +2,19 @@
 
 use FindBin;
 use Test::Most;
-use HTTP::Request::Common;
-
+use Test::WWW::Mechanize::Catalyst;
 use lib "$FindBin::Bin/lib";
-use Catalyst::Test 'TestApp';
 
-ok my($res, $c) = ctx_request('/');
+ok my $mech = Test::WWW::Mechanize::Catalyst->new(
+  catalyst_app => 'TestApp');
 
-{
-  ok my $response = request GET $c->uri_for_action('/welcome'),
-    'got welcome from a catalyst controller';
+$mech->get_ok("/welcome");
+$mech->content_is("Welcome to Catalyst: 1");
 
-  is $response->content, 'Welcome to Catalyst: 1',
-    'expected content body';
-}
+$mech->get_ok("/welcome");
+$mech->content_is("Welcome to Catalyst: 2");
 
-{
-  ok my $response = request GET $c->uri_for_action('/welcome'),
-    'got welcome from a catalyst controller';
-
-  is $response->content, 'Welcome to Catalyst: 2',
-    'expected content body';
-}
+$mech->get_ok("/welcome");
+$mech->content_is("Welcome to Catalyst: 3");
 
 done_testing;
